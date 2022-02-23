@@ -25,9 +25,9 @@ const AddItems = ({item,show,setShow,load,setLoad}) => {
     setProduct(item?item.product:"");
     setCompany(item?item.company:"");
     setDescription(item?item.description:"");
-    setPrice(item?item.price:"");
+    setPrice(item?item.price:0);
     setColor(item?item.color:"");
-    setRating(item?item.rating:"");
+    setRating(item?item.rating:0);
     setNew(item?item.isnew:true);
     setBestseller(item?item.isbestseller:false);
     setStock(item?item.inStock:true);
@@ -46,7 +46,8 @@ const AddItems = ({item,show,setShow,load,setLoad}) => {
   }
 
   const validateAddItems = () => {
-    return product.length > 0 && company.length > 0 && price.length > 0 && color.length > 0 && rating.length > 0;
+      
+    return product.length > 0 && company.length > 0 && !isNaN(Number(rating)) && color.length > 0 && !isNaN(Number(rating));
   }
   
   if(additem && !additem.error)
