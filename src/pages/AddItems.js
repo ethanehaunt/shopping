@@ -14,7 +14,7 @@ const AddItems = ({item,show,setShow,load,setLoad}) => {
   const [price, setPrice] = useState("");
   const [color, setColor] = useState("");
   const [rating, setRating] = useState("");
-  const [isNew, setNew] = useState(true);
+  const [isnew, setNew] = useState(true);
   const [isbestseller, setBestseller] = useState(false);
   const [inStock, setStock] = useState(true);
   const [image, setImage] = useState("avatar.jpg");
@@ -28,10 +28,10 @@ const AddItems = ({item,show,setShow,load,setLoad}) => {
     setPrice(item?item.price:"");
     setColor(item?item.color:"");
     setRating(item?item.rating:"");
-    setNew(item?item.isNew:true);
+    setNew(item?item.isnew:true);
     setBestseller(item?item.isbestseller:false);
     setStock(item?item.inStock:true);
-    setImage(item?item.image:"avatar.jpg");
+    setImage(item?item.image:"../img/avatar.jpg");
 
   }, [item]);
   
@@ -40,7 +40,7 @@ const AddItems = ({item,show,setShow,load,setLoad}) => {
   
   const submitAddItem = () =>{
     
-    let itemdetails = {_id:item?item._id:undefined,product:product,company:company,description:description,price:price,color:color,rating:rating,isNew:isNew,isbestseller:isbestseller,inStock:inStock,image:image};
+    let itemdetails = {_id:item?item._id:undefined,product:product,company:company,description:description,price:price,color:color,rating:rating,isnew:isnew,isbestseller:isbestseller,inStock:inStock,image:image};
     useFetch((item?"update":"add")+"item",'POST',itemdetails,addItemDetails);
 
   }
@@ -101,8 +101,8 @@ const AddItems = ({item,show,setShow,load,setLoad}) => {
 
            <div className='d-flex justify-content-between w-100 mb-3 px-1'>
                <div className="form-check pt-2">
-                <input className="form-check-input mt-1" type="checkbox" id="isNew" checked={isNew} onChange={(e)=>setNew(e.target.checked)}/>
-                <label className="form-check-label" htmlFor="isNew">is New</label>
+                <input className="form-check-input mt-1" type="checkbox" id="isnew" checked={isnew} onChange={(e)=>setNew(e.target.checked)}/>
+                <label className="form-check-label" htmlFor="isnew">is New</label>
               </div>
               <div className="form-check pt-2">
                 <input className="form-check-input mt-1" type="checkbox" id="isbestseller" checked={isbestseller} onChange={(e)=>setBestseller(e.target.checked)}/>
