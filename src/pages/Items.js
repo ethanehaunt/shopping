@@ -37,7 +37,7 @@ function Item({item,toggleLoad})
           <CardTitle className="text-center mb-0">{item.product}</CardTitle>
           <div className='d-flex justify-content-center'>
             <div>{item.isbestseller && <Badge className="badge-danger product mx-1">Bestseller</Badge>}</div>
-            <div>{item.isNew && <Badge className="badge-info mx-1">New</Badge>}</div>
+            <div>{item.isnew && <Badge className="badge-info mx-1">New</Badge>}</div>
           </div>
         </div>
         <div className="text-muted text-center"><small>{item.company}</small></div>

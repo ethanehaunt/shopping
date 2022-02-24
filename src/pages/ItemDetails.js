@@ -40,7 +40,7 @@ function ItemDetails({item,toggleLoad})
                 <h4 className="h2-responsive text-md-left product-name font-weight-bold dark-grey-text mb-1 ml-xl-0 ml-4">{item.product}</h4>
                 <div className="ms-1">
                   {item.isbestseller && <Badge className="badge-danger product mx-1">Bestseller</Badge>}
-                  {item.isNew && <Badge className="badge-info product mx-1">New</Badge>}
+                  {item.isnew && <Badge className="badge-info product mx-1">New</Badge>}
                 </div>
               </div>
               <small className="text-muted">{item.company}</small>            

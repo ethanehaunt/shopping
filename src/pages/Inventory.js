@@ -5,7 +5,7 @@ import {Card,CardBody,Table,TableHead,TableBody,Icon } from "./../styles/shoppin
 
 function RenderItem({item,load,setLoad,handleShow}) {
 
-  const [isNew, setIsNew] = useState(item.isNew);
+  const [isnew, setisnew] = useState(item.isnew);
   const [updateItem, updateInventoryData] = useState(null);
   
   const removeFromInventory = (item_id) => {
@@ -37,7 +37,7 @@ function RenderItem({item,load,setLoad,handleShow}) {
           <td>{item.rating}</td>        
           <td>
             <div className="form-check">
-              <input className="form-check-input mt-1" type="checkbox" id="isNew" checked={item.isNew} onChange={(e)=>toggleItemData(e.target.checked,item._id,'isNew')}/>
+              <input className="form-check-input mt-1" type="checkbox" id="isnew" checked={item.isnew} onChange={(e)=>toggleItemData(e.target.checked,item._id,'isnew')}/>
             </div>
           </td>        
           <td>
