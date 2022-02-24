@@ -1,5 +1,6 @@
 import { React,useState,useEffect } from 'react';
 import { useParams,Link } from "react-router-dom";
+import Loader from "./Loader";
 import useFetch from "./../services/useFetch";
 import {Breadcrumb,BreadcrumbItem,Badge,Card,CardBody,CardImage,Icon} from "./../styles/shopping";
 
@@ -22,8 +23,10 @@ function RenderRating(props)
 function ItemDetails({item,toggleLoad})
 {
   const [addMyCart, addIntoMyCartData] = useState(null);  
+  const [qty,setQty] = useState(1);
+
   const addToCart = (itemid) => {
-    useFetch('addtocart','POST',{itemid:itemid},addIntoMyCartData);
+    useFetch('addtocart','POST',{itemid:itemid,qty:Number(qty)},addIntoMyCartData);
     toggleLoad();
   }
 
@@ -46,9 +49,14 @@ function ItemDetails({item,toggleLoad})
               <small className="text-muted">{item.company}</small>            
             </div>
             <div className="col-md-4 col-sm-12 px-0 text-center">
-              <button className="btn btn-primary btn-rounded" onClick={() => addToCart(item._id)} >
-                <i className="fas fa-shopping-cart mr-2" aria-hidden="true"></i> Add to cart
-              </button>
+
+              <div className="input-group input-group-sm">
+                <input type="number" className="form-control" value={qty} onChange={(e)=> setQty(e.target.value)}/>
+                <button className="btn btn-primary btn-rounded" onClick={() => addToCart(item._id)} >
+                  <i className="fas fa-shopping-cart mr-2" aria-hidden="true"></i> Add to cart
+                </button>
+              </div>
+              
             </div>
           </div>
           <h3 className="d-flex flex-column text-center text-md-left my-4">
@@ -72,28 +80,38 @@ function ItemDetails({item,toggleLoad})
 export default function RenderItemDetails({toggleLoad}) {
 
   const params = useParams();
+  const [isLoading,setIsLoading] = useState(true);
   const [itemDetails, setData] = useState(null);
 
   useEffect(() => {
+    setIsLoading(true);
     useFetch("items/_id="+params._id,'GET',null,setData);
+    setIsLoading(false);
   }, []);
 
   
   return (
-    <div className="d-flex flex-column p-4">      
-      
-      <Breadcrumb className="mb-1">
-        <BreadcrumbItem> 
-          <Link to='/src'>Products</Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem active>Product Details</BreadcrumbItem>
-      </Breadcrumb>
 
-      <h2 className="font-weight-bold mb-3">Product Details</h2>
-      <div className="row m-0 mb-4">
-        {itemDetails && itemDetails.map((item) => <ItemDetails key={item._id} item={item} toggleLoad={toggleLoad}/>)}
+  <>
+    {isLoading && <Loader />}
+
+    {!isLoading && 
+      <div className="d-flex flex-column p-4">      
+        
+        <Breadcrumb className="mb-1">
+          <BreadcrumbItem> 
+            <Link to='/src'>Products</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>Product Details</BreadcrumbItem>
+        </Breadcrumb>
+
+        <h2 className="font-weight-bold mb-3">Product Details</h2>
+        <div className="row m-0 mb-4">
+          {itemDetails && itemDetails.map((item) => <ItemDetails key={item._id} item={item} toggleLoad={toggleLoad}/>)}
+        </div>
       </div>
-    </div>
+     }
+    </>
   );
   
 }

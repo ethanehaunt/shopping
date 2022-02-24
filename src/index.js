@@ -22,6 +22,7 @@ import Header from './pages/Header.js';
 import ItemDetails from './pages/ItemDetails.js';
 import Mycart from './pages/Mycart.js';
 import Inventory from './pages/Inventory.js';
+import Purchase from './pages/Purchase.js';
 import NoPage from './pages/NoPage.js';
 
 export default function App() {
@@ -51,6 +52,7 @@ export default function App() {
             <Route index element={isadmin ? <Inventory/> : <Items toggleLoad={toggleLoad}/>} />
             <Route path="/src/items/:_id" element={<ItemDetails toggleLoad={toggleLoad}/>} />
             <Route path="/src/mycart" element={<Mycart load={load} toggleLoad={toggleLoad} />} />
+            <Route path="/src/purchase" element={<Purchase load={load} toggleLoad={toggleLoad}/>} />
             <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>
