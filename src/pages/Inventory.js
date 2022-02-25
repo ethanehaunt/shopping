@@ -66,7 +66,7 @@ function RenderItem({item,load,setLoad,handleShow}) {
 }
 
 
-const Inventory = () => {
+const Inventory = ({isLoading,setIsLoading}) => {
   
   const [itemList,setItemList] = useState(null);
   const [item,setItem] = useState(null);
@@ -77,11 +77,13 @@ const Inventory = () => {
   
   
   useEffect(() => {    
+    setIsLoading(true);
     useFetch("items",'GET',null,setItemList);
+    setIsLoading(false);
   }, [load]); 
  
   return (
-    <div className="container-fluid d-flex flex-column justify-content-center p-2 py-4">
+    <div className="container-fluid d-flex flex-column justify-content-center p-2 py-4" hidden={isLoading}>
       <div className="d-flex justify-content-between">
         <h2 className="font-weight-bold mb-3">Inventory</h2>
         <div>

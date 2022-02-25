@@ -1,7 +1,6 @@
 import React,{ useState,useEffect,memo }  from 'react';
 import { Link } from "react-router-dom";
 import useFetch from "./../services/useFetch";
-import Loader from "./Loader";
 import {RemoveBtn} from "./../styles/shopping";
 import {Icon,Card,CardBody,CardFooter,Button,Table,TableHead,TableBody } from "./../styles/shopping";
 
@@ -58,9 +57,8 @@ function RenderTotalCost(props)
 }
 
 
-const Mycart = ({load,toggleLoad}) => {
+const Mycart = ({load,toggleLoad,isLoading,setIsLoading}) => {
   
-  const [isLoading,setIsLoading] = useState(true);
   const [myCartList, setMyCartData] = useState([]);
 
   useEffect(() => {
@@ -73,12 +71,7 @@ const Mycart = ({load,toggleLoad}) => {
 
   return (
 
-    <>
-    {isLoading && <Loader />}
-
-    {!isLoading && 
-
-      <div className="d-flex flex-column m-4">
+    <div className="d-flex flex-column m-4" hidden={isLoading}>
         <div className="d-flex justify-content-between">
           <h2 className="font-weight-bold mb-3">My Cart</h2>
           <div>
@@ -111,8 +104,8 @@ const Mycart = ({load,toggleLoad}) => {
           </CardFooter>
         </Card>
       </div>
-    }
-    </>
+    
+    
   );
   
 }

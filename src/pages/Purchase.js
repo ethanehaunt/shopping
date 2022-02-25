@@ -1,7 +1,6 @@
 import React,{ useState,useEffect,memo }  from 'react';
 import { Link } from "react-router-dom";
 import useFetch from "./../services/useFetch";
-import Loader from "./Loader";
 import {Icon,Card,Breadcrumb,BreadcrumbItem,CardHeader,CardBody,CardFooter} from "./../styles/shopping";
 
 function RenderTotalCost(props)
@@ -12,14 +11,13 @@ function RenderTotalCost(props)
   return (<>{total}</>);
 }
 
-const Purchase = ({load,toggleLoad}) => {
+const Purchase = ({load,toggleLoad,isLoading,setIsLoading}) => {
 
-  const [isLoading,setIsLoading] = useState(true);
   const [myCartList, setMyCartData] = useState([]);
   const [removeitem,addRemoveDetails] = useState(null);
 
 
-  const [cardtype,setCardType] = useState("");
+  const [cardtype,setCardType] = useState("credit");
   const [name,setName] = useState("");
   const [cardnumber, setCardNumber] = useState("");
   const [expiration, setExpiration] = useState("");
@@ -54,12 +52,7 @@ const Purchase = ({load,toggleLoad}) => {
 
   return (
 
-    <>
-    {isLoading && <Loader />}
-
-    {!isLoading && 
-
-      <div className="d-flex flex-column m-4">
+    <div className="d-flex flex-column m-4" hidden={isLoading}>
         
 
           <Breadcrumb className="mb-1">
@@ -127,8 +120,8 @@ const Purchase = ({load,toggleLoad}) => {
         </Card>
         
       </div>
-    }
-    </>
+    
+    
   );
 };
 

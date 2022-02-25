@@ -1,7 +1,6 @@
 import React,{ useState, useEffect, useCallback,memo } from 'react';
 import { Outlet, Link } from "react-router-dom";
 import useFetch from "./../services/useFetch";
-import Loader from "./Loader";
 import { useDebouncedCallback } from 'use-debounce';
 import { Card,CardTitle,CardBody,CardImage,CardFooter,Badge,Button,Table,TableHead,TableBody,Icon } from "./../styles/shopping";
 
@@ -79,9 +78,8 @@ function Item({item,toggleLoad})
   )
 }
 
-const Items = ({toggleLoad}) =>{
+const Items = ({toggleLoad,isLoading,setIsLoading}) =>{
   
-  const [isLoading,setIsLoading] = useState(true);
   const [itemList,setItemList] = useState(null);
   const [categoryList,setCategoryList] = useState(null);
   const [searchItem,setSearchItem] = useState("");
@@ -115,11 +113,7 @@ const Items = ({toggleLoad}) =>{
   }, [searchItem,category]); 
  
   return (
-    <>
-    {isLoading && <Loader />}
-
-    {!isLoading && 
-      <div className="container-fluid d-flex flex-column justify-content-center p-2 py-4">
+    <div className="container-fluid d-flex flex-column justify-content-center p-2 py-4" hidden={isLoading}>
       <div className='input-group mb-3'>        
         <select className='form-control' onChange={(e) => debounceSearchCategory(e.target.value)}>
           <option value=''>All Category</option>
@@ -128,8 +122,8 @@ const Items = ({toggleLoad}) =>{
         <input type='text' className="form-control w-75" placeholder="Search here your items..." onChange={(e) => debounceSearchItems(e.target.value)}  />
       </div>
       <div className="row m-0">{itemList && itemList.map((item) => item.inStock && <Item key={item._id} item={item} toggleLoad={toggleLoad} />)}</div> 
-    </div> }  
-    </>   
+    </div> 
+      
   );
 }
 

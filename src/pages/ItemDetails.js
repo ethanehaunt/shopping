@@ -1,6 +1,5 @@
 import { React,useState,useEffect } from 'react';
 import { useParams,Link } from "react-router-dom";
-import Loader from "./Loader";
 import useFetch from "./../services/useFetch";
 import {Breadcrumb,BreadcrumbItem,Badge,Card,CardBody,CardImage,Icon} from "./../styles/shopping";
 
@@ -77,10 +76,9 @@ function ItemDetails({item,toggleLoad})
   );
 }
 
-export default function RenderItemDetails({toggleLoad}) {
+export default function RenderItemDetails({toggleLoad,isLoading,setIsLoading}) {
 
   const params = useParams();
-  const [isLoading,setIsLoading] = useState(true);
   const [itemDetails, setData] = useState(null);
 
   useEffect(() => {
@@ -92,11 +90,7 @@ export default function RenderItemDetails({toggleLoad}) {
   
   return (
 
-  <>
-    {isLoading && <Loader />}
-
-    {!isLoading && 
-      <div className="d-flex flex-column p-4">      
+    <div className="d-flex flex-column p-4" hidden={isLoading}>      
         
         <Breadcrumb className="mb-1">
           <BreadcrumbItem> 
@@ -110,8 +104,8 @@ export default function RenderItemDetails({toggleLoad}) {
           {itemDetails && itemDetails.map((item) => <ItemDetails key={item._id} item={item} toggleLoad={toggleLoad}/>)}
         </div>
       </div>
-     }
-    </>
+     
+    
   );
   
 }
