@@ -10,12 +10,15 @@ function RenderMyCart({mycart,toggleLoad})
     
   const removeFromCart = (cart_id) => {
     useFetch('removefromcart/'+cart_id,'DELETE',null,removeFromMyCartData);
+    toggleLoad(); 
+
   }
 
-  if(removeItem && !removeItem.error)
-  {
-    removeFromMyCartData(null);
+  const updateMycart = (productid,qty) => {
+
+    useFetch('updatemycart','POST',{productid:productid,qty:Number(qty)},removeFromMyCartData);
     toggleLoad(); 
+
   }
 
   return(
@@ -33,7 +36,7 @@ function RenderMyCart({mycart,toggleLoad})
         </td>
         <td>{mycart.productdetails[0].color}</td>
         <td>{mycart.productdetails[0].price}</td>
-        <td>{mycart.qty}</td>
+        <td className='w-15'><input type="number" className="form-control" value={mycart.qty} onChange={(e)=> updateMycart(mycart.productid,e.target.value)}/></td>
         <td>{mycart.productdetails[0].price * mycart.qty}</td>
         <td className="w-15">
           <span className='c-pointer p-2 text-danger' onClick={() => removeFromCart(mycart._id)}>
@@ -54,50 +57,55 @@ function RenderTotalCost(props)
 }
 
 
-const Mycart = ({load,toggleLoad}) => {
+const Mycart = ({load,toggleLoad,isLoading,setIsLoading}) => {
   
   const [myCartList, setMyCartData] = useState([]);
 
-
   useEffect(() => {
+    setIsLoading(true);
     useFetch("mycart",'GET',null,setMyCartData); 
+    setIsLoading(false);
+
   }, [load]);
 
 
   return (
-    <div className="d-flex flex-column m-4">
-      <div className="d-flex justify-content-between">
-        <h2 className="font-weight-bold mb-3">My Cart</h2>
-        <div>
-          <button className="btn btn-primary btn-rounded">
-            Complete purchase <i className="fas fa-angle-right right ms-2" aria-hidden="true"></i>
-          </button>
+
+    <div className="d-flex flex-column m-4" hidden={isLoading}>
+        <div className="d-flex justify-content-between">
+          <h2 className="font-weight-bold mb-3">My Cart</h2>
+          <div>
+            <Link className="btn btn-primary btn-rounded" to='/src/purchase'>
+              Complete purchase <i className="fas fa-angle-right right ms-2" aria-hidden="true"></i>
+            </Link>
+          </div>
         </div>
+        <Card className="border w-100 m-auto">
+          <CardBody className="d-flex justify-content-center p-0 overflow-auto">
+            <Table className="table">
+              <TableHead>
+                <tr>
+                  <th></th>
+                  <th>Product</th>
+                  <th>Color</th>
+                  <th>Price</th>
+                  <th>Qty</th>
+                  <th>Amount</th>
+                  <th></th>
+                </tr>
+              </TableHead>
+              <TableBody>
+                {myCartList && myCartList.map((mycart) => <RenderMyCart key={mycart._id} mycart={mycart} toggleLoad={toggleLoad}/>)}
+              </TableBody>
+            </Table>
+          </CardBody>
+          <CardFooter>
+            <div className='h5 d-flex justify-content-end'>Total Rs. {myCartList && <RenderTotalCost total={myCartList}/>}</div>
+          </CardFooter>
+        </Card>
       </div>
-      <Card className="border w-100 m-auto">
-        <CardBody className="d-flex justify-content-center p-0 overflow-auto">
-          <Table className="table">
-            <TableHead>
-              <tr>
-                <th></th>
-                <th>Product</th>
-                <th>Color</th>
-                <th>Price</th>
-                <th>Qty</th>
-                <th>Amount</th>
-                <th></th>
-              </tr>
-            </TableHead>
-            <TableBody>
-              {myCartList && myCartList.map((mycart) => <RenderMyCart key={mycart._id} mycart={mycart} toggleLoad={toggleLoad}/>)}
-            </TableBody>
-          </Table>
-        </CardBody>
-        <CardFooter>
-          <div className='h5 d-flex justify-content-end'>Total Rs. {myCartList && <RenderTotalCost total={myCartList}/>}</div>
-        </CardFooter>
-      </Card>
-    </div>
+    
+    
   );
   
 }

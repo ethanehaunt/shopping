@@ -22,12 +22,17 @@ import Header from './pages/Header.js';
 import ItemDetails from './pages/ItemDetails.js';
 import Mycart from './pages/Mycart.js';
 import Inventory from './pages/Inventory.js';
+import Purchase from './pages/Purchase.js';
 import NoPage from './pages/NoPage.js';
+import Loader from "./pages/Loader.js";
+
 
 export default function App() {
 
   const cookies = new Cookies();
   const [isadmin,setIsAdmin] = useState(null);
+  const [isLoading,setIsLoading] = useState(true);
+
   const [load, setLoad] = useState(0);
   const [theme, themeToggler] = useDarkMode();
   
@@ -47,10 +52,13 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Login />}></Route>
           <Route path="/logout" element={<Logout />}></Route>
-          <Route path="/src" element={<Header load={load} theme={theme} themeToggler={themeToggler} />}> }
-            <Route index element={isadmin ? <Inventory/> : <Items toggleLoad={toggleLoad}/>} />
-            <Route path="/src/items/:_id" element={<ItemDetails toggleLoad={toggleLoad}/>} />
-            <Route path="/src/mycart" element={<Mycart load={load} toggleLoad={toggleLoad} />} />
+          <Route path="/src" element={<><Header load={load} theme={theme} themeToggler={themeToggler} /> <Loader hide={!isLoading}/></>}>
+
+
+            <Route index element={isadmin ? <Inventory isLoading={isLoading} setIsLoading={setIsLoading}/> : <Items toggleLoad={toggleLoad} isLoading={isLoading} setIsLoading={setIsLoading}/>} />
+            <Route path="/src/items/:_id" element={<ItemDetails toggleLoad={toggleLoad} isLoading={isLoading} setIsLoading={setIsLoading}/>} />
+            <Route path="/src/mycart" element={<Mycart load={load} toggleLoad={toggleLoad} isLoading={isLoading} setIsLoading={setIsLoading}/>} />
+            <Route path="/src/purchase" element={<Purchase load={load} toggleLoad={toggleLoad} isLoading={isLoading} setIsLoading={setIsLoading}/>} />
             <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>

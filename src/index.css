@@ -28,6 +28,18 @@ code {
     monospace;
 }
 
+
+div[disabled]
+{
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+div[hidden]
+{
+  display: none !important;
+}
+
 a
 {
   text-decoration: auto;

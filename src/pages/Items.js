@@ -23,9 +23,11 @@ function RenderRating(props)
 function Item({item,toggleLoad})
 {
   const [addMyCart, addIntoMyCartData] = useState(null);
+  const [qty,setQty] = useState(1);
   
   const addToCart = (itemid) => {
-    useFetch('addtocart','POST',{itemid:itemid},addIntoMyCartData);
+
+    useFetch('addtocart','POST',{itemid:itemid,qty:Number(qty)},addIntoMyCartData);
     toggleLoad();
   }
 
@@ -43,28 +45,40 @@ function Item({item,toggleLoad})
         <div className="text-muted text-center"><small>{item.company}</small></div>
         <div className='text-center'>
           <RenderRating key={'rating'+item._id} rating={item.rating}/>
+          <div className='text-muted h3 pt-1'>Rs. {item.price}</div>
         </div>
       </CardBody>
       <CardFooter className='text-muted d-flex justify-content-between px-3'>
-        <div className='text-muted h3 d-flex align-items-baseline pt-1'>Rs. {item.price}</div>
-        <div className='d-flex flex-row'>
-          <Link to={"/src/items/"+item._id} >
-            <div title="View Details">
-              <Icon className="fas fa-eye px-2"/>
-            </div>
-          </Link>
-          <Link to="" onClick={() => addToCart(item._id)}>
-            <div title="Add to Cart">
-              <Icon className="fas fa-shopping-cart px-2"/>
-            </div>              
-          </Link>
-        </div>
+        
+          <div className="input-group input-group-sm w-50">
+            <span className="input-group-text bg-white">
+              <Link to={"/src/items/"+item._id} >
+                <div title="View Details">
+                  <Icon className="fas fa-eye px-2"/>
+                </div>
+              </Link>
+            </span>            
+          </div>
+
+          <div className="input-group input-group-sm w-50">
+            <input type="number" className="form-control" value={qty} onChange={(e)=> setQty(e.target.value)}/>
+            <span className="input-group-text bg-white">
+              <Link to="" onClick={() => addToCart(item._id)}>
+                <div title="Add to Cart">
+                  <Icon className="fas fa-shopping-cart px-2"/>
+                </div>              
+              </Link>
+            </span>
+          </div>
+
+          
+
       </CardFooter>
     </Card>
   )
 }
 
-const Items = ({toggleLoad}) =>{
+const Items = ({toggleLoad,isLoading,setIsLoading}) =>{
   
   const [itemList,setItemList] = useState(null);
   const [categoryList,setCategoryList] = useState(null);
@@ -80,6 +94,7 @@ const Items = ({toggleLoad}) =>{
   
   useEffect(() => {
     
+    setIsLoading(true);
     let searchlist = "";
     if (category)
       searchlist += "company="+category
@@ -93,10 +108,12 @@ const Items = ({toggleLoad}) =>{
     
     useFetch("items/"+searchlist,'GET',null,setItemList);
     toggleLoad();
+    setIsLoading(false);
+
   }, [searchItem,category]); 
  
   return (
-    <div className="container-fluid d-flex flex-column justify-content-center p-2 py-4">
+    <div className="container-fluid d-flex flex-column justify-content-center p-2 py-4" hidden={isLoading}>
       <div className='input-group mb-3'>        
         <select className='form-control' onChange={(e) => debounceSearchCategory(e.target.value)}>
           <option value=''>All Category</option>
@@ -105,7 +122,8 @@ const Items = ({toggleLoad}) =>{
         <input type='text' className="form-control w-75" placeholder="Search here your items..." onChange={(e) => debounceSearchItems(e.target.value)}  />
       </div>
       <div className="row m-0">{itemList && itemList.map((item) => item.inStock && <Item key={item._id} item={item} toggleLoad={toggleLoad} />)}</div> 
-    </div>      
+    </div> 
+      
   );
 }
 
