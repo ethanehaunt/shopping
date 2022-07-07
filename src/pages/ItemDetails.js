@@ -31,7 +31,7 @@ function ItemDetails({item,toggleLoad})
     <Card className="border w-100">
       <CardBody className="row m-0 p-2">
         <div className="col-md-6 col-sm-12">
-          <CardImage src={"./../"+item.image} position='top' alt='...' />
+          <CardImage src={"../../"+item.image} position='top' alt='...' />
         </div>
         <div className="col-md-6 col-sm-12 text-md-left p-2">
           <div className="row m-0">

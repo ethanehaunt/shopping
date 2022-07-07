@@ -13,9 +13,8 @@ function RenderItem({item,load,setLoad,handleShow}) {
     setLoad(!load);
   }
 
-  const toggleItemData = (ischecked,id,typedata) =>{
+  const toggleItemData = (ischecked,updatedetails,typedata) =>{
     
-    let updatedetails = {_id:id};
     updatedetails[typedata] = ischecked;
     useFetch('updateitem','POST',updatedetails,updateInventoryData);
     setLoad(!load);
@@ -37,17 +36,17 @@ function RenderItem({item,load,setLoad,handleShow}) {
           <td>{item.rating}</td>        
           <td>
             <div className="form-check">
-              <input className="form-check-input mt-1" type="checkbox" id="isnew" checked={item.isnew} onChange={(e)=>toggleItemData(e.target.checked,item._id,'isnew')}/>
+              <input className="form-check-input mt-1" type="checkbox" id="isnew" checked={item.isnew} onChange={(e)=>toggleItemData(e.target.checked,item,'isnew')}/>
             </div>
           </td>        
           <td>
             <div className="form-check">
-              <input className="form-check-input mt-1" type="checkbox" id="isbestseller" checked={item.isbestseller} onChange={(e)=>toggleItemData(e.target.checked,item._id,'isbestseller')}/>
+              <input className="form-check-input mt-1" type="checkbox" id="isbestseller" checked={item.isbestseller} onChange={(e)=>toggleItemData(e.target.checked,item,'isbestseller')}/>
             </div>
           </td>
           <td>
             <div className="form-check form-switch pt-2">
-              <input className="form-check-input mt-1" type="checkbox" id="inStock" checked={item.inStock} onChange={(e)=>toggleItemData(e.target.checked,item._id,'inStock')}/>
+              <input className="form-check-input mt-1" type="checkbox" id="inStock" checked={item.inStock} onChange={(e)=>toggleItemData(e.target.checked,item,'inStock')}/>
               <label className="form-check-label" htmlFor="inStock">In Stock</label>
             </div>
           </td>        

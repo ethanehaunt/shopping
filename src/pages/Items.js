@@ -25,7 +25,7 @@ function Item({item,toggleLoad})
   const [addMyCart, addIntoMyCartData] = useState(null);
   
   const addToCart = (itemid) => {
-    useFetch('addtocart','POST',{itemid:itemid},addIntoMyCartData);
+    useFetch('addtocart','POST',{itemid:itemid,qty:1},addIntoMyCartData);
     toggleLoad();
   }
 
