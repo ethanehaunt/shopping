@@ -53,25 +53,47 @@ function RenderTotalCost(props)
   return (<>{total}</>);
 }
 
+const CurrentDate = () => {
+
+  const date = new Date();
+  const month = date.getMonth()+1;
+
+  return `${date.getFullYear()}-${month.length>1?month:'0'+month}-${date.getDate()}T${date.getHours()}:${date.getMinutes()}:00`;
+}
+
 
 const Mycart = ({load,toggleLoad}) => {
   
   const [myCartList, setMyCartData] = useState([]);
-
+  const [messageData, setMessageData] = useState("message to send for scheduling");
+  const [phoneNumber, setPhoneNumber] = useState("9163214034");
+  const [scheduled, setScheduled] = useState(CurrentDate());
+  const [messageStatus, setMessageStatus] = useState("");
 
   useEffect(() => {
     useFetch("mycart",'GET',null,setMyCartData); 
   }, [load]);
 
+  const messageFromMyCart = () => {
+    useFetch('message/','POST',{message:messageData,phonenumber:phoneNumber,scheduled_at:scheduled.replace("T"," ")+":00"},messageStatus);
+  }
 
   return (
     <div className="d-flex flex-column m-4">
       <div className="d-flex justify-content-between">
         <h2 className="font-weight-bold mb-3">My Cart</h2>
         <div>
-          <button className="btn btn-primary btn-rounded">
-            Complete purchase <i className="fas fa-angle-right right ms-2" aria-hidden="true"></i>
-          </button>
+          <div className="input-group mb-3">
+            <input type="text" className="form-control w-38" placeholder="Recipient's Message" value={messageData} onChange={(e) => setMessageData(e.target.value)}/>
+            <input type="text" className="form-control w-20" placeholder="Recipient's Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+            <input type="datetime-local" className="form-control w-24" placeholder="Recipient's Phone Number" value={scheduled} onChange={(e) => setScheduled
+              (e.target.value)}/>
+           
+            <button className="btn btn-primary btn-rounded" onClick={() => messageFromMyCart()}>
+              Message My Cart <i className="fas fa-angle-right right ms-2" aria-hidden="true"></i>
+            </button>
+          </div>
+
         </div>
       </div>
       <Card className="border w-100 m-auto">
