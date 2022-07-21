@@ -66,7 +66,7 @@ const Mycart = ({load,toggleLoad}) => {
   
   const [myCartList, setMyCartData] = useState([]);
   const [messageData, setMessageData] = useState("message to send for scheduling");
-  const [phoneNumber, setPhoneNumber] = useState("9163214034");
+  const [phoneNumber, setPhoneNumber] = useState("919163214034");
   const [scheduled, setScheduled] = useState(CurrentDate());
   const [messageStatus, setMessageStatus] = useState("");
 
